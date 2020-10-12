@@ -1,33 +1,36 @@
-require('dotenv').config()
-const mongoose=require("mongoose");
-const bodyParser= require("body-parser")
-const cookieParser=require("cookie-parser")
-const cors=require("cors");
-const express = require('express');
+require("dotenv").config();
+const mongoose = require("mongoose");
+const express = require("express");
 const app = express();
-const authRoutes=require("./routes/auth")
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
-//db connections
-mongoose.connect(process.env.DATABASE,{
+const authRoutes = require("./routes/auth");
+
+//DB Connection
+mongoose
+  .connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
-  }).then(()=>{
-    console.log("DB CONNECTED");
   })
+  .then(() => {
+    console.log("DB CONNECTED");
+  });
 
-//middlewares
+//Middlewares
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
 
-//my routes
-app.use("/api",authRoutes)
+//My Routes
+app.use("/api", authRoutes);
 
-//ports
+//PORT
 const port = process.env.PORT;
 
-//server 
+//Starting a server
 app.listen(port, () => {
-  console.log(`server running at port: ${port}`)
+  console.log(`server is running at ${port}`);
 });
